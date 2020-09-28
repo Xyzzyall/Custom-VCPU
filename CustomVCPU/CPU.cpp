@@ -16,10 +16,12 @@ CPU::CPU(int ram_capacity, int prog_mem_capacity)
 	this->prog_mem_capacity = prog_mem_capacity;
 	this->program = new short[prog_mem_capacity];
 
+	erase_memory();
+
 	reset_regs();
 	reset_flags();
 
-	this->step = 0;
+	this->current_step = 0;
 }
 
 void CPU::step()
@@ -29,7 +31,8 @@ void CPU::step()
 	}
 
 	//reading current cmd
-	short cmd = read_prog_mem(prog_counter);
+	unsigned short cmd = read_prog_mem(prog_counter);
+	unsigned short op;
 
 	switch (cmd)
 	{
@@ -38,13 +41,40 @@ void CPU::step()
 	case CMD_HALT:
 		halt = true;
 		break;
-	case CMD_READ_TO_REG0:
-		short op = read_operand();
+	case CMD_READ:
+		op = read_operand();
 		reg_mem[0] = read_ram(op);
 		break;
-	case CMD_SET_INDEX:
-		short op = read_operand();
-		reg_mem[7] = op;
+	case CMD_READ_INDEX:
+		op = read_operand();
+		reg_mem[0] = read_ram(op + reg_mem[7]);
+		break;
+	case CMD_CMP_ARRAY:
+		compare(reg_mem[7], reg_mem[6]);
+		break;
+	case CMD_JUMP:
+		op = read_operand();
+		prog_counter = op - 1;
+		break;
+	case CMD_JUMP_SIGN:
+		op = read_operand();
+		if (sign) 
+			prog_counter = op - 1;
+		break;
+	case CMD_JUMP_ZERO:
+		op = read_operand();
+		if (zero)
+			prog_counter = op - 1;
+		break;
+	case CMD_JUMP_NSIGN:
+		op = read_operand();
+		if (!sign)
+			prog_counter = op - 1;
+		break;
+	case CMD_JUMP_NZERO:
+		op = read_operand();
+		if (!zero)
+			prog_counter = op - 1;
 		break;
 
 	//Macros declarations down there, maybe doing it outside switch was better solution.
@@ -85,7 +115,7 @@ void CPU::step()
 	CMD_INC_REGX(6)
 	CMD_INC_REGX(7)
 	default:
-		throw new std::exception("Cannot decode next command.");
+		throw std::exception(("Cannot decode next command. cmd = " + std::to_string(cmd)).c_str());
 		break;
 	}
 
@@ -123,12 +153,30 @@ void CPU::load_memory(std::string prog_bin, std::string ram_bin)
 	load_ram(ram_bin);
 }
 
+void CPU::set_memory(short * program, short * ram)
+{
+	if ((sizeof(program) / sizeof(short) > prog_mem_capacity) || (sizeof(ram) / sizeof(short) > ram_capacity))
+		throw std::exception("Somehow I cannot push this memory to the CPU.");
+
+	for (int i = 0; i < prog_mem_capacity; i++)
+	{
+		this->program[i] = program[i];
+	}
+
+	for (int i = 0; i < ram_capacity; i++)
+	{
+		this->ram[i] = ram[i];
+	}
+}
+
 void CPU::load_program(std::string bin_file)
 {
+	//todo
 }
 
 void CPU::load_ram(std::string bin_file)
 {
+	//todo
 }
 
 void CPU::erase_memory()
@@ -146,7 +194,7 @@ void CPU::erase_memory()
 	}
 	else {
 		//todo: write nice cool looking exception classes for any type of exceptions
-		throw new std::exception("Somehow memory size vars is corrupted.");
+		throw std::exception("Somehow memory size vars is corrupted.");
 	}
 }
 
@@ -158,6 +206,11 @@ std::string CPU::tell_me_about_yourself()
 	for (int i = 0; i < CPU_REG_COUNT; i++) {
 		result += "reg" + std::to_string(i) + " = " + std::to_string(reg_mem[i]) + '\n';
 	}
+	result += "flags:\n";
+	result += "halt = " + std::to_string(halt) + '\n';
+	result += "sign = " + std::to_string(sign) + '\n';
+	result += "zero = " + std::to_string(zero) + '\n';
+	result += "steps done: " + std::to_string(current_step) + '\n';
 	return result;
 }
 
@@ -207,7 +260,7 @@ short CPU::read_ram(int ptr)
 {
 	ptr_check(ptr, ram_capacity, "Reading RAM failure: bad RAM pointer.");
 
-	return 0;
+	return ram[ptr];
 }
 
 void CPU::write_ram(int ptr, short data)
@@ -218,7 +271,9 @@ void CPU::write_ram(int ptr, short data)
 void CPU::ptr_check(int ptr, int capacity, std::string commentary="")
 {
 	if ((ptr > capacity) || (ptr < 0)) {
-		throw new std::exception(("Pointer error. Commentary: '" + commentary + "'").data);
+		//todo: write nice cool looking exception classes for any type of exceptions
+		const char* response = ("Pointer error. Commentary: '" + commentary + "'").c_str();
+		throw std::exception( response );
 	}
 }
 
