@@ -155,12 +155,22 @@
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="CustomVCPU.cpp" />
     <ClCompile Include="Device.cpp" />
+    <ClCompile Include="Lexer.cpp" />
+    <ClCompile Include="Parser.cpp" />
+    <ClCompile Include="syntax_tree.cpp" />
+    <ClCompile Include="tag.cpp" />
+    <ClCompile Include="tlang_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Console.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Device.h" />
+    <ClInclude Include="Lexer.h" />
+    <ClInclude Include="Parser.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="syntax_tree.h" />
+    <ClInclude Include="tag.h" />
+    <ClInclude Include="tlang_parser.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CustomVCPU.rc" />

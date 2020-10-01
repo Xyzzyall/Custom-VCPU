@@ -8,8 +8,10 @@ from reg1 to reg6 -- general purpose
 reg6 -- array register (may be compared to reg7), but may be used as you like
 reg7 -- address register, but may be used as you like
 */
-class CPU
+namespace hardware 
 {
+	class CPU
+	{
 	public:
 		CPU(int ram_capacity, int prog_mem_capacity);
 
@@ -23,7 +25,7 @@ class CPU
 
 		std::string tell_me_about_yourself();
 
-		enum Commands {
+		static enum Commands {
 			CMD_CHILL = 0, //does nothing
 			CMD_READ = 0x0100, //op - ram pointer, reads from RAM to reg0
 			CMD_COPY_REG0_TO_REGX = 0x0200, //no op, copies var from reg0 to regX, X defined by low byte
@@ -68,9 +70,9 @@ class CPU
 		//regs vars
 		short reg_mem[CPU_REG_COUNT];
 		int prog_counter;
-		
+
 		void reset_regs();
-		
+
 		//flags vars
 		bool halt;
 		bool zero;
@@ -79,4 +81,6 @@ class CPU
 		//flags operations
 		void reset_flags();
 		void compare(int x, int y);
-};
+	};
+
+}

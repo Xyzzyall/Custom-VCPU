@@ -4,6 +4,8 @@
 #include <iostream>
 #include "CPU.h"
 
+using namespace hardware;
+
 short test_prog[128] = {
 	CPU::CMD_READ, 0, //0, 1
 	CPU::CMD_COPY_REG0_TO_REGX + 6, //2
@@ -24,7 +26,7 @@ short test_prog[128] = {
 
 short test_RAM[128] = {
  11,
- 1, 2, 3, 4, 10, 5, 6, 7, 8, 9, 0
+ 1, 2, 3, 4, 15, 5, 6, 7, 8, 9, 0
 };
 
 int main(int argc, char* argv[])
