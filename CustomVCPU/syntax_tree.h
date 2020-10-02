@@ -2,14 +2,24 @@
 #include <vector>
 #include <string>
 #include "tag.h"
+#include <sstream>
 
 namespace software 
 {
+	enum actions {
+		ACT_NOTHING,
+		ACT_TAG,
+		ACT_TEXT_NEXT,
+		ACT_NUMBER,
+		ACT_PASS_TO_NL,
+		ACT_
+	};
+
 	class syntax_tree //it is not an actual tree, as you see
 	{
 	public:
 		syntax_tree();
-		void put_keyword(std::string word, int word_tag, int action = ACT_TAG);
+		void put_keyword(std::string word, int word_tag, int action = ACT_NOTHING);
 		void append_next_char(char c);
 		void erase_buffer();
 
@@ -28,15 +38,9 @@ namespace software
 		std::vector<int> tags;
 		std::vector<char> current_word;
 
-		int num_of_keywords;
-	};
+		std::string current_word_str();
 
-	enum actions {
-		ACT_NOTHING,
-		ACT_TAG,
-		ACT_TEXT_NEXT,
-		ACT_NUMBER,
-		ACT_PASS_TO_NL 
+		int num_of_keywords;
 	};
 
 }

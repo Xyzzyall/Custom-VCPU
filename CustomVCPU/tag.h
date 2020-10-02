@@ -3,17 +3,6 @@
 
 namespace software
 {
-	class tag
-	{
-	public:
-		tag(int tag_name = software::TAG_UNKNOWN, std::string contains = "");
-		~tag();
-		int tag_name;
-		std::string contains;
-		tag copy();
-	};
-
-
 	enum tags {
 		TAG_UNKNOWN,
 
@@ -60,15 +49,31 @@ namespace software
 		TAG_NSIGN,
 		TAG_ZERO,
 		TAG_NZERO,
+		TAG_INC,
 
 		TAG_HALT,
 
 		//ram 
 		TAG_RAM,
-		TAG_DEC
-
+		TAG_DEC,
+		TAG_last
 	};
 
-	std::string meanful_chars = "._qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM;0123456789#/";
+	static const std::string meanful_chars = "._qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789#/";
+	static const std::string numbers = "0123456789";
+	static const std::string text_symbs = "._qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789";
+
+	class tag
+	{
+	public:
+		tag(int tag_name = TAG_UNKNOWN, std::string contains = "");
+		~tag();
+		int tag_name;
+		std::string contains;
+		tag copy();
+		std::string to_string();
+	};
+
+	
 }
 

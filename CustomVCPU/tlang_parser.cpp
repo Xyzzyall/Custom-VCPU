@@ -5,10 +5,11 @@ namespace software
 	tlang_parser::tlang_parser()
 	{
 		//commentary
-		syntax.put_keyword("//", TAG_UNKNOWN, ACT_PASS_TO_NL);
+		syntax.put_keyword("/", TAG_UNKNOWN, ACT_PASS_TO_NL);
 		//common tags
 		syntax.put_keyword(";", TAG_SEMICOLON);
 		syntax.put_keyword("end", TAG_END);
+		syntax.put_keyword("0", TAG_NUMBER, ACT_NUMBER);
 		syntax.put_keyword("1", TAG_NUMBER, ACT_NUMBER);
 		syntax.put_keyword("2", TAG_NUMBER, ACT_NUMBER);
 		syntax.put_keyword("3", TAG_NUMBER, ACT_NUMBER);
@@ -29,7 +30,7 @@ namespace software
 		syntax.put_keyword("compile", TAG_COMPILE);
 
 		//cmd mode tags
-		syntax.put_keyword("savebin", TAG_SAVEBIN);
+		syntax.put_keyword("savebin", TAG_SAVEBIN, ACT_TEXT_NEXT);
 
 		//settings
 		syntax.put_keyword("settings", TAG_SETTINGS);
@@ -37,16 +38,16 @@ namespace software
 		syntax.put_keyword("size_ram", TAG_RAM_MEM_SIZE);
 
 		//address tweaks
-		syntax.put_keyword("#", TAG_SHARP);
-		syntax.put_keyword("p#", TAG_P_SHARP);
-		syntax.put_keyword("r#", TAG_R_SHARP);
+		syntax.put_keyword("#", TAG_SHARP, ACT_TEXT_NEXT);
+		syntax.put_keyword("p#", TAG_P_SHARP, ACT_TEXT_NEXT);
+		syntax.put_keyword("r#", TAG_R_SHARP, ACT_TEXT_NEXT);
 
 		//commands
 		syntax.put_keyword("program", TAG_PROGRAM);
 
 		syntax.put_keyword("read", TAG_READ);
 		syntax.put_keyword("copy", TAG_COPY);
-		syntax.put_keyword("reg", TAG_REG);
+		syntax.put_keyword("reg", TAG_REG, ACT_TAG);
 		syntax.put_keyword("to", TAG_TO);
 		syntax.put_keyword("index", TAG_INDEX);
 		syntax.put_keyword("compare", TAG_COMPARE);
@@ -55,6 +56,7 @@ namespace software
 		syntax.put_keyword("nsign", TAG_NSIGN);
 		syntax.put_keyword("zero", TAG_ZERO);
 		syntax.put_keyword("nzero", TAG_NZERO);
+		syntax.put_keyword("inc", TAG_INC);
 
 		syntax.put_keyword("halt", TAG_HALT);
 
