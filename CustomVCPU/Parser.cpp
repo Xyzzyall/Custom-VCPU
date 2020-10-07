@@ -24,7 +24,7 @@ namespace software
 			std::string s;
 			text >> s;
 			//std::cout << s << ' ';
-			for (char c : s) {
+			for (char c : s) { //todo: refactor this. I thought that sstream does not ignore space/nl characters.
 				switch (current_action)
 				{
 				case ACT_NOTHING: //default procces of parsing common tags 
@@ -90,6 +90,7 @@ namespace software
 					break;
 				}
 			}
+
 			if (current_tag.tag_name != TAG_UNKNOWN) {
 				parsed_tags.push_back(current_tag.copy());
 				syntax.erase_buffer();

@@ -23,7 +23,7 @@ namespace software
 		void append_next_char(char c);
 		void erase_buffer();
 
-		class tag_out {
+		static const class tag_out {
 		public:
 			tag_out(tag t, int action);
 			tag_out();

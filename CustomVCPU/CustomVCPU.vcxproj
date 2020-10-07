@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Builder.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="CPU.cpp" />
     <ClCompile Include="CustomVCPU.cpp" />
@@ -159,9 +160,12 @@
     <ClCompile Include="Parser.cpp" />
     <ClCompile Include="syntax_tree.cpp" />
     <ClCompile Include="tag.cpp" />
+    <ClCompile Include="TLang_lexer.cpp" />
     <ClCompile Include="tlang_parser.cpp" />
+    <ClCompile Include="VCPU_Console.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Builder.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Device.h" />
@@ -170,7 +174,9 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="syntax_tree.h" />
     <ClInclude Include="tag.h" />
+    <ClInclude Include="TLang_lexer.h" />
     <ClInclude Include="tlang_parser.h" />
+    <ClInclude Include="VCPU_Console.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="CustomVCPU.rc" />

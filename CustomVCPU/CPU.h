@@ -1,5 +1,6 @@
 #pragma once
 #define CPU_REG_COUNT 8
+#define CPU_INDEX_REG 7
 #include <string>
 
 /* About registers:

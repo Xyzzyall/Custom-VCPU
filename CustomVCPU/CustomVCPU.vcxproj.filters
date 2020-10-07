@@ -37,6 +37,12 @@
     <Filter Include="Файлы заголовков\TLang Compiler">
       <UniqueIdentifier>{73acf5de-b58d-4cc5-91c5-4d35004a597a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Console">
+      <UniqueIdentifier>{23e0c36d-d504-42fe-8e63-bc5c0e459d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Console">
+      <UniqueIdentifier>{c6b16cc7-709b-4c24-8f16-8a45850ea8bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CustomVCPU.cpp">
@@ -66,6 +72,15 @@
     <ClCompile Include="tlang_parser.cpp">
       <Filter>Исходные файлы\TLang Compiler</Filter>
     </ClCompile>
+    <ClCompile Include="VCPU_Console.cpp">
+      <Filter>Исходные файлы\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Builder.cpp">
+      <Filter>Исходные файлы\TLang Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="TLang_lexer.cpp">
+      <Filter>Исходные файлы\TLang Compiler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h">
@@ -93,6 +108,15 @@
       <Filter>Файлы заголовков\Compiler</Filter>
     </ClInclude>
     <ClInclude Include="tlang_parser.h">
+      <Filter>Файлы заголовков\TLang Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="VCPU_Console.h">
+      <Filter>Файлы заголовков\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder.h">
+      <Filter>Файлы заголовков\TLang Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="TLang_lexer.h">
       <Filter>Файлы заголовков\TLang Compiler</Filter>
     </ClInclude>
   </ItemGroup>

@@ -21,7 +21,7 @@ namespace software
 	protected:
 		syntax_tree syntax;
 
-		class unknown_tag_exception : public std::exception {
+		static const class unknown_tag_exception : public std::exception {
 		public:
 			unknown_tag_exception(std::string st);
 		};

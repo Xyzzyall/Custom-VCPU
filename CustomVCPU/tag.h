@@ -56,7 +56,9 @@ namespace software
 		//ram 
 		TAG_RAM,
 		TAG_DEC,
-		TAG_last
+		TAG_last,
+
+		
 	};
 
 	static const std::string meanful_chars = "._qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM0123456789#/";
@@ -72,6 +74,7 @@ namespace software
 		std::string contains;
 		tag copy();
 		std::string to_string();
+		static std::string get_name_of_tag(int tag_name);
 	};
 
 	
