@@ -11,6 +11,7 @@ namespace software
 
 	void Parser::parse(std::stringstream text)
 	{
+		parsed_tags.clear(); //TODO: for JIT compilation it will be deleted
 		int current_action = ACT_NOTHING;
 		tag nulltag = tag();
 		tag current_tag = nulltag;

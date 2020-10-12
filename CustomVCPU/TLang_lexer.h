@@ -2,6 +2,7 @@
 #include "Lexer.h"
 
 namespace software {
+
 	class TLang_lexer :
 		public Lexer
 	{

@@ -280,6 +280,10 @@ namespace software {
 			}
 		}
 
+		//TODO: delete this
+		clear_links_buffer();
+		tags.clear();
+
 		return result;
 	}
 }

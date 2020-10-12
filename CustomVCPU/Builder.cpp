@@ -26,6 +26,10 @@ namespace software
 			
 	}
 
+	void Builder::put_tokens(std::vector<Lexer::token> token)
+	{
+	}
+
 	hardware::CPU Builder::get_cpu()
 	{
 		return hardware::CPU(compiled_cpu);
@@ -41,8 +45,8 @@ namespace software
 		std::vector<short> ram = std::vector<short>();
 		std::vector<short> program = std::vector<short>();
 
-		int ram_size = -1;
-		int program_size = -1;
+		unsigned int ram_size = 0;
+		unsigned int program_size = 0;
 
 		bool success = true;
 
@@ -171,36 +175,40 @@ namespace software
 	void Builder::build_links(std::vector<short> & program)
 	{
 		//progmem links
-		auto it = program_links.begin();
-		while (it != program_links.end()) {
-			if (it->second[0] == -1)
-				throw Builder::buider_exception("Program links are corrupted: there is undeclared link.");
-			int size = it->second.size();
-			for (int i = 1; i < size; i++) {
-				try {
-					program[it->second[i]] = it->second[0];
+		{
+			auto it = program_links.begin();
+			while (it != program_links.end()) {
+				if (it->second[0] == -1)
+					throw Builder::buider_exception("Program links are corrupted: there is undeclared link.");
+				int size = it->second.size();
+				for (int i = 1; i < size; i++) {
+					try {
+						program[it->second[i]] = it->second[0];
+					}
+					catch (const std::out_of_range exc) {
+						throw Builder::buider_exception("Program links are corrupted: link forwards to nowhere.");
+					}
 				}
-				catch (const std::out_of_range exc) {
-					throw Builder::buider_exception("Program links are corrupted: link forwards to nowhere.");
-				}
+				it++;
 			}
-			it++;
 		}
 		//ram links
-		auto it = ram_links.begin();
-		while (it != ram_links.end()) {
-			if (it->second[0] == -1)
-				throw Builder::buider_exception("RAM links are corrupted: there is undeclared link.");
-			int size = it->second.size();
-			for (int i = 1; i < size; i++) {
-				try {
-					program[it->second[i]] = it->second[0];
+		{
+			auto it = ram_links.begin();
+			while (it != ram_links.end()) {
+				if (it->second[0] == -1)
+					throw Builder::buider_exception("RAM links are corrupted: there is undeclared link.");
+				int size = it->second.size();
+				for (int i = 1; i < size; i++) {
+					try {
+						program[it->second[i]] = it->second[0];
+					}
+					catch (const std::out_of_range exc) {
+						throw Builder::buider_exception("RAM links are corrupted: link forwards to nowhere.");
+					}
 				}
-				catch (const std::out_of_range exc) {
-					throw Builder::buider_exception("RAM links are corrupted: link forwards to nowhere.");
-				}
+				it++;
 			}
-			it++;
 		}
 		//clearing link buffers for further usage
 		program_links.clear();

@@ -32,14 +32,14 @@ namespace hardware
 
 	CPU::CPU(const CPU & c) : CPU(c.ram_capacity, c.prog_mem_capacity)
 	{
-		for (int i; i < ram_capacity; i++)
+		for (int i = 0; i < ram_capacity; i++)
 			ram[i] = c.ram[i];
-		for (int i; i < prog_mem_capacity; i++)
+		for (int i = 0; i < prog_mem_capacity; i++)
 			program[i] = c.program[i];
 
 		current_step = c.current_step;
 
-		for (int i; i < CPU_REG_COUNT; i++)
+		for (int i = 0; i < CPU_REG_COUNT; i++)
 			reg_mem[i] = c.reg_mem[i];
 
 		halt = c.halt;

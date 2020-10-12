@@ -12,7 +12,7 @@ namespace software
 	{
 	public:
 		Parser();
-		~Parser();
+		//~Parser();
 		void parse(std::stringstream text);
 		std::stringstream parsed_tags_to_sstream();
 		std::vector<tag> get_parsed_tags();

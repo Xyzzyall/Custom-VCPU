@@ -5,9 +5,8 @@
 #include <unordered_map>
 #include "Lexer.h"
 #include "CPU.h"
-#include "VCPU_Console.h"
 
-namespace software 
+namespace software
 {
 	enum builder_cmds {
 		BLDCMD_PROGRAM_START,
@@ -29,6 +28,7 @@ namespace software
 		};
 
 		void put_token(Lexer::token token);
+		void put_tokens(std::vector<Lexer::token> token);
 
 		hardware::CPU get_cpu();
 	protected:

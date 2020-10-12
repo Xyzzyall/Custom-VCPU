@@ -14,14 +14,6 @@ namespace software
 		ram_links = std::vector<std::string>();
 	}
 
-	Lexer::~Lexer()
-	{
-		for (tag t : tags)
-			delete &t;
-		delete &tags;
-		delete 
-	}
-
 	Lexer::token Lexer::create_token(int name, int data)
 	{
 		token res = token();
