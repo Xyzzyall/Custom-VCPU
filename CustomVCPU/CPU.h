@@ -15,6 +15,8 @@ namespace hardware
 	{
 	public:
 		CPU(int ram_capacity, int prog_mem_capacity);
+		CPU();
+		CPU(const CPU & c);
 
 		void step();
 		void steps(int steps);

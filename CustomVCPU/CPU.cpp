@@ -26,6 +26,29 @@ namespace hardware
 		this->current_step = 0;
 	}
 
+	CPU::CPU() : CPU(0,0)
+	{
+	}
+
+	CPU::CPU(const CPU & c) : CPU(c.ram_capacity, c.prog_mem_capacity)
+	{
+		for (int i; i < ram_capacity; i++)
+			ram[i] = c.ram[i];
+		for (int i; i < prog_mem_capacity; i++)
+			program[i] = c.program[i];
+
+		current_step = c.current_step;
+
+		for (int i; i < CPU_REG_COUNT; i++)
+			reg_mem[i] = c.reg_mem[i];
+
+		halt = c.halt;
+		sign = c.sign;
+		zero = c.zero;
+
+		prog_counter = c.prog_counter;
+	}
+
 	void CPU::step()
 	{
 		if (halt) {

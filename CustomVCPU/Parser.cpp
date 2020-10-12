@@ -9,11 +9,6 @@ namespace software
 		syntax = syntax_tree();
 	}
 
-	Parser::~Parser()
-	{
-		
-	}
-
 	void Parser::parse(std::stringstream text)
 	{
 		int current_action = ACT_NOTHING;
@@ -104,11 +99,21 @@ namespace software
 	std::stringstream Parser::parsed_tags_to_sstream()
 	{
 		std::stringstream out = std::stringstream();
-		for (tag t : parsed_tags)
+		int size = parsed_tags.size();
+		for (int i = 0; i < size; i++)
 		{
-			out << t.to_string() << ',';
+			out << std::to_string(i) << "\t" << parsed_tags[i].to_string() << '\n';
 		}
 		return out;
+	}
+
+	std::vector<tag> Parser::get_parsed_tags()
+	{
+		std::vector<tag> res = std::vector<tag>();
+		for (tag t:parsed_tags) {
+			res.push_back(t.copy());
+		}
+		return res;
 	}
 
 	

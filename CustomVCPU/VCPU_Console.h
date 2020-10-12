@@ -5,6 +5,8 @@ namespace software {
 		CONCMD_SET_COMPILER_MODE,
 		CONCMD_SET_CONSOLE_MODE,
 		CONCMD_END,
+		CONCMD_SAVEBIN,
+		CONCMD_EXIT
 	};
 	
 	class VCPU_Console

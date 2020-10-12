@@ -46,10 +46,12 @@ namespace software
 
 		TOKEN_RAM,
 		TOKEN_RAM_LINK,
-		
+		TOKEN_RAM_DATA,
+
 		TOKEN_RAM_SIZE_SETTINGS,
 		TOKEN_PROGMEM_SIZE_SETTINGS,
 
+		TOKEN_COMMON,
 		TOKEN_CONSOLE,
 		TOKEN_BUILDER,
 	};
@@ -66,6 +68,7 @@ namespace software
 		};
 		static token create_token(int name, int data);
 		static token create_token_with_str(int name, int data, std::string str_operand);
+		static token copy_token(token t);
 
 		static const class rule { //wip: for dynamic syntax trees
 		public:
@@ -81,6 +84,7 @@ namespace software
 		static const class lexer_exception : std::exception {
 		public:
 			lexer_exception(std::string str);
+			std::string msg;
 		};
 
 		void add_rule(rule r); //wip: for dynamic syntax trees
@@ -90,10 +94,13 @@ namespace software
 
 		std::vector<token> lexerify();
 
+		static std::string tokens_to_to_str(std::vector<token> tokens);
+		static std::string token_to_str(int token);
+
 	protected:
 		std::vector<tag> tags;
 
-		void throw_expected_tag_exc(int * expected, int given);
+		void throw_expected_tag_exc(int * expected, int given, int tag_n);
 
 		static struct link {
 			std::string name;
@@ -105,6 +112,8 @@ namespace software
 
 		int get_progmem_link(std::string name);
 		int get_ram_link(std::string name);
+
+		void clear_links_buffer();
 	private:
 		std::vector<std::string> progmem_links;
 		std::vector<std::string> ram_links;

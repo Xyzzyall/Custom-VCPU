@@ -5,6 +5,7 @@
 #include "CPU.h"
 #include <sstream>
 #include "tlang_parser.h"
+#include "TLang_lexer.h"
 
 using namespace hardware;
 
@@ -91,7 +92,7 @@ mode compiler;
 settings;
 	size_prog 128; /commentary/
 	size_ram 128;
-end settings;
+end;
 
 program;
 	/main/
@@ -111,14 +112,14 @@ program;
 		copy reg0 to reg1;
 		jump p#reg1copied;
 		
-end program;
+end;
 
 ram;
 	#array_len;
 		dec 10;
 	#array;
 		dec 1; dec 2; dec 3; dec 10; dec 5; dec 3; dec 3; dec 1; dec 0; dec 7;
-end ram;
+end;
 
 compile;
 
@@ -128,10 +129,17 @@ exit;
 )");
 		//std::cout << test_prog_text.str();
 		std::cout << parser.parsed_tags_to_sstream().str();
+		software::TLang_lexer lx = software::TLang_lexer();
+		lx.append_tags(parser.get_parsed_tags());
+		std::cout << software::Lexer::tokens_to_to_str(lx.lexerify());
 	}
 	catch (const std::exception& exception)
 	{
 		std::cout << exception.what();
+	}
+	catch (const software::Lexer::lexer_exception& exception)
+	{
+		std::cout << exception.msg;
 	}
 	
 	
