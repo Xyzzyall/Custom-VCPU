@@ -16,10 +16,13 @@ namespace software
 		tag nulltag = tag();
 		tag current_tag = nulltag;
 
+		
+
 		while (!text.eof()) {
 			std::string s;
 			text >> s;
-			//std::cout << s << ' ';
+			//std::cout << s;
+			//std::cout << s << '\n';
 			for (char c : s) { //todo: refactor this. I thought that sstream does not ignore space/nl characters.
 				switch (current_action)
 				{
@@ -114,6 +117,7 @@ namespace software
 		for (tag t:parsed_tags) {
 			res.push_back(t.copy());
 		}
+		parsed_tags.clear();
 		return res;
 	}
 

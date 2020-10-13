@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <exception>
+#include <iostream>
 #include "CPU.h"
 #include "Builder.h"
 #include "TLang_lexer.h"

@@ -12,7 +12,6 @@ namespace software
 		TAG_NUMBER,
 		TAG_UNSEEN_DIVIDER,
 		TAG_TEXT,
-		TAG_EXIT,
 
 		//mode sets
 		TAG_MODE,
@@ -51,13 +50,23 @@ namespace software
 		TAG_NZERO,
 		TAG_INC,
 
+		TAG_SUM,
+		TAG_SUM2,
+		TAG_MULT,
+		
+		TAG_WRITE,
+
 		TAG_HALT,
 
 		//ram 
 		TAG_RAM,
 		TAG_DEC,
 
-		TAG_last,
+		//console
+		TAG_STEP,
+		TAG_STEPS,
+		TAG_CPU_STATS,
+		TAG_EXIT,
 
 		
 	};

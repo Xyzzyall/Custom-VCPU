@@ -12,11 +12,13 @@ namespace hardware
 	CPU::CPU(int ram_capacity, int prog_mem_capacity)
 	{
 		//initializing 
-		this->ram = new short[ram_capacity];
+		this->ram = std::vector<short>();
 		this->ram_capacity = ram_capacity;
+		ram.resize(ram_capacity);
 
 		this->prog_mem_capacity = prog_mem_capacity;
-		this->program = new short[prog_mem_capacity];
+		this->program = std::vector<short>();
+		program.resize(prog_mem_capacity);
 
 		erase_memory();
 
@@ -26,11 +28,11 @@ namespace hardware
 		this->current_step = 0;
 	}
 
-	CPU::CPU() : CPU(0,0)
+	CPU::CPU() : CPU(0, 0)
 	{
 	}
 
-	CPU::CPU(const CPU & c) : CPU(c.ram_capacity, c.prog_mem_capacity)
+	CPU::CPU(const CPU & c) : CPU (c.ram_capacity, c.prog_mem_capacity)
 	{
 		for (int i = 0; i < ram_capacity; i++)
 			ram[i] = c.ram[i];
@@ -100,6 +102,27 @@ namespace hardware
 			op = read_operand();
 			if (!zero)
 				prog_counter = op - 1;
+			break;
+		case CMD_MULT_REG1_REG2:
+			reg_mem[1] = reg_mem[1] * reg_mem[2];
+			break;
+		case CMD_SUM_REG1_REG2:
+			reg_mem[1] = reg_mem[1] + reg_mem[2];
+			break;
+		case CMD_SUM_REG12_REG34: {
+			unsigned int buf0 = (reg_mem[1] << 16); buf0 += reg_mem[2];
+			unsigned int buf1 = (reg_mem[3] << 16); buf1 += reg_mem[4];
+			buf0 = buf0 + buf1;
+			reg_mem[1] = buf0; reg_mem[2] = buf0 >> 16;
+			break;
+		}
+		case CMD_WRITE:
+			op = read_operand();
+			write_ram(op, reg_mem[0]);
+			break;
+		case CMD_WRITE_INDEX:
+			op = read_operand();
+			write_ram(op + reg_mem[CPU_INDEX_REG], reg_mem[0]);
 			break;
 
 			//Macros declarations down there, maybe doing it outside switch was better solution.
@@ -206,7 +229,7 @@ namespace hardware
 
 	void CPU::erase_memory()
 	{
-		if ((ram_capacity > 0) && (prog_mem_capacity > 0)) {
+		if ((ram_capacity >= 0) && (prog_mem_capacity >= 0)) {
 			for (int i = 0; i < ram_capacity; i++)
 			{
 				ram[i] = 0;
@@ -229,7 +252,8 @@ namespace hardware
 		result += "registers:\n";
 		result += "PC = " + std::to_string(prog_counter) + '\n';
 		for (int i = 0; i < CPU_REG_COUNT; i++) {
-			result += "reg" + std::to_string(i) + " = " + std::to_string(reg_mem[i]) + '\n';
+			result += "reg" + std::to_string(i) + " = " + std::to_string(reg_mem[i]) + " = " +
+				(std::stringstream() << std::hex << reg_mem[i]).str() + '\n';
 		}
 		result += "flags:\n";
 		result += "halt = " + std::to_string(halt) + '\n';
@@ -241,8 +265,8 @@ namespace hardware
 
 	CPU::~CPU()
 	{
-		delete[] ram;
-		delete[] program;
+		//delete[] ram;
+		//delete[] program;
 	}
 
 	void CPU::reset_regs()

@@ -4,10 +4,11 @@ namespace software
 {
 	Builder::Builder()
 	{
-		compiled_cpu = hardware::CPU();
+		compiled_cpu = hardware::CPU(1,1);
 		tokens = std::deque<Lexer::token>();
 		program_links = std::unordered_map<int, std::vector<int>>();
 		ram_links = std::unordered_map<int, std::vector<int>>();
+		logs = std::vector<std::string>();
 	}
 
 	Builder::buider_exception::buider_exception(std::string str) : std::exception(str.c_str())
@@ -18,6 +19,7 @@ namespace software
 	void Builder::put_token(Lexer::token token)
 	{
 		if ((token.name == TOKEN_BUILDER) && (token.data == BLDCMD_COMPILE)) {
+			tokens.push_back(Lexer::copy_token(token));
 			compile();
 		}
 		else {
@@ -28,6 +30,21 @@ namespace software
 
 	void Builder::put_tokens(std::vector<Lexer::token> token)
 	{
+	}
+
+	void Builder::clear_token_buffer()
+	{
+		tokens.clear();
+	}
+
+	std::string Builder::get_logs()
+	{
+		std::string res = "";
+		for (std::string s : logs) {
+			res += s + '\n';
+		}
+		logs.clear();
+		return res;
 	}
 
 	hardware::CPU Builder::get_cpu()
@@ -52,7 +69,17 @@ namespace software
 
 		#define IF_TKN_END if ((tokens.front().name == TOKEN_COMMON) && (tokens.front().data == CONCMD_END) ) { mode = MODE_UNKNOWN; success = true; }
 		#define IF_TKN_NAME(n) if (tokens.front().name == n)
-		#define IF_NOT_SUCCESS(details) if (!success) throw Builder::buider_exception("Bad tokens. Details: " + std::string(details))
+		#define IF_NOT_SUCCESS(details) if (!success) throw Builder::buider_exception("Bad token " + Lexer::token_to_str(tokens.front().name) + " . Details: " + std::string(details))
+
+		log("Start building. Given " + std::to_string(tokens.size()) + " tokens.");
+
+		log("Tokens: ");
+		std::vector<Lexer::token> tkns;
+		int size = tokens.size();
+		for (int i = 0; i < size; i++) {
+			tkns.push_back(tokens[i]);
+		}
+		log(Lexer::tokens_to_to_str(tkns));
 
 		while (!tokens.empty())
 		{
@@ -78,6 +105,7 @@ namespace software
 					case BLDCMD_COMPILE:
 						if (program_size < program.size()) {
 							program_size = program.size();
+							log("Program size was not enought or not defined.");
 							//throw Builder::buider_exception("Program memory error: the defined amount is not enough!");
 						}
 						else {
@@ -86,15 +114,27 @@ namespace software
 
 						if (ram_size < ram.size()) {
 							ram_size = ram.size();
+							log("RAM size was not enought or not defined.");
 							//throw Builder::buider_exception("RAM error: the defined amount is not enough!");
 						}
 						else {
 							ram.resize(ram_size);
 						}
 
+						log("Program size = " + std::to_string(program_size));
+						log("RAM size = " + std::to_string(ram_size));
+
+						log("Linking " + std::to_string(program_links.size()) +" program links.");
+						log("Linking " + std::to_string(ram_links.size()) + " RAM links.");
 						build_links(program);
+						log("Building successful.");
+						log("Program:");
+						log(data_to_str(program));
+						log("Memory:");
+						log(data_to_str(ram));
 						compiled_cpu = hardware::CPU(ram_size, program_size);
 						compiled_cpu.set_memory(program.data(), ram.data());
+						log("CPU has created. Use 'step' or 'steps *num*' to run.");
 						break;
 					}
 				}
@@ -119,8 +159,8 @@ namespace software
 				}
 				
 				IF_TKN_END;
-				tokens.pop_front();
 				IF_NOT_SUCCESS("this command is not allowed in settings mode.");
+				tokens.pop_front();
 				break;
 			case MODE_PROGRAM: //maybe better use switch/case too, but I am so tired of them
 				IF_TKN_NAME(TOKEN_COMMAND) {
@@ -149,11 +189,11 @@ namespace software
 					success = true;
 				}
 				IF_TKN_END;
-				tokens.pop_front();
 				IF_NOT_SUCCESS("this command is not allowed in program mode.");
+				tokens.pop_front();
 				break;
 			case MODE_RAM:
-				IF_TKN_NAME(TOKEN_RAM) {
+				IF_TKN_NAME(TOKEN_RAM_DATA) {
 					ram.push_back(tokens.front().data);
 					success = true;
 				}
@@ -165,11 +205,26 @@ namespace software
 					success = true;
 				}
 				IF_TKN_END;
-				tokens.pop_front();
 				IF_NOT_SUCCESS("this command is not allowed in RAM mode.");
+				tokens.pop_front();
 				break;
 			}
 		}
+	}
+
+	void software::Builder::log(std::string msg)
+	{
+		logs.push_back(msg);
+	}
+
+	std::string software::Builder::data_to_str(std::vector<short> data)
+	{
+		std::stringstream stream;
+		int size = data.size();
+		for (int i = 0; i < size; i++) {
+			stream << i << '\t' << std::hex << data[i] << '\n';
+		}
+		return stream.str();
 	}
 
 	void Builder::build_links(std::vector<short> & program)

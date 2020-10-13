@@ -21,6 +21,11 @@ namespace software
 		syntax.put_keyword("9", TAG_NUMBER, ACT_NUMBER);
 		syntax.put_keyword("exit", TAG_EXIT);
 
+		//console
+		syntax.put_keyword("step", TAG_STEP);
+		syntax.put_keyword("steps", TAG_STEPS);
+		syntax.put_keyword("cpustats", TAG_CPU_STATS);
+
 		//mode sets
 		syntax.put_keyword("mode", TAG_MODE);
 		syntax.put_keyword("compiler", TAG_COMPILER);
@@ -58,12 +63,20 @@ namespace software
 		syntax.put_keyword("nzero", TAG_NZERO);
 		syntax.put_keyword("inc", TAG_INC);
 
+		syntax.put_keyword("sum", TAG_SUM);
+		syntax.put_keyword("sum2", TAG_SUM2);
+		syntax.put_keyword("mult", TAG_MULT);
+
+		syntax.put_keyword("write", TAG_WRITE);
+
 		syntax.put_keyword("halt", TAG_HALT);
 
 		//ram
 		syntax.put_keyword("ram", TAG_RAM);
 
 		syntax.put_keyword("dec", TAG_DEC);
+
+		
 
 	}
 }

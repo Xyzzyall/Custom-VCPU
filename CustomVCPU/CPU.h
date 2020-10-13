@@ -2,6 +2,8 @@
 #define CPU_REG_COUNT 8
 #define CPU_INDEX_REG 7
 #include <string>
+#include <sstream>
+#include <vector>
 
 /* About registers:
 reg0 -- accumulator, result of every operation stays here
@@ -42,7 +44,14 @@ namespace hardware
 			CMD_JUMP_ZERO = 0x0702, //op - prog_mem pointer, jumps to op if zero is true
 			CMD_JUMP_NSIGN = 0x0703, //op - prog_mem pointer, jumps to op if sign is false
 			CMD_JUMP_NZERO = 0x0704, //op - prog_mem pointer, jumps to op if zero is false
-			CMD_HALT = 0xFFFF //halt
+			CMD_HALT = 0xFFFF, //halt
+
+			CMD_MULT_REG1_REG2 = 0x0812, //no op, reg1 = reg1 * reg2
+			CMD_SUM_REG1_REG2 = 0x0912, //no op, reg1 = reg1 + reg2
+			CMD_SUM_REG12_REG34 = 0x2913, //no op reg1|reg2 = reg1|reg2 + reg3|reg4, | means concat
+			
+			CMD_WRITE = 0x1000, //op - ram ptr, writes reg0 to RAM(ptr)
+			CMD_WRITE_INDEX = 0x1100 //op - ram ptr, writes reg0 to RAM(ptr+reg7)
 		};
 
 		~CPU();
@@ -52,10 +61,10 @@ namespace hardware
 
 		//memory vars
 		int ram_capacity;
-		short *ram;
+		std::vector<short> ram;
 
 		int prog_mem_capacity;
-		short *program;
+		std::vector<short> program;
 
 		//memory operations
 		short read_prog_mem(int ptr);

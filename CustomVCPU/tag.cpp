@@ -69,11 +69,21 @@ std::string software::tag::to_string()
 		str_tag_case(TAG_NZERO)
 		str_tag_case(TAG_INC)
 
+		str_tag_case(TAG_SUM)
+		str_tag_case(TAG_SUM2)
+		str_tag_case(TAG_MULT)
+
+		str_tag_case(TAG_WRITE)
+
 		str_tag_case(TAG_HALT)
 
 		//ram 
 		str_tag_case(TAG_RAM)
 		str_tag_case(TAG_DEC)
+
+		str_tag_case(TAG_STEP)
+		str_tag_case(TAG_STEPS)
+		str_tag_case(TAG_CPU_STATS)
 	default:
 		return std::string("Unknown");
 	}
@@ -131,11 +141,21 @@ std::string software::tag::get_name_of_tag(int tag_name)
 		str_tag(TAG_NZERO)
 		str_tag(TAG_INC)
 
+		str_tag(TAG_SUM)
+		str_tag(TAG_SUM2)
+		str_tag(TAG_MULT)
+
+		str_tag(TAG_WRITE)
+
 		str_tag(TAG_HALT)
 
 		//ram 
 		str_tag(TAG_RAM)
 		str_tag(TAG_DEC)
+
+		str_tag(TAG_STEP)
+		str_tag(TAG_STEPS)
+		str_tag(TAG_CPU_STATS)
 	default:
 		return std::string("Unknown");
 	}

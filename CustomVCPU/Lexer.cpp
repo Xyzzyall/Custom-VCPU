@@ -2,8 +2,10 @@
 
 namespace software 
 {
-	Lexer::lexer_exception::lexer_exception(std::string str) : std::exception(str.c_str())
+	Lexer::lexer_exception::lexer_exception(std::string str, Lexer & lx) : std::exception(str.c_str())
 	{
+		lx.clear_links_buffer();
+		lx.tags.clear();
 		msg = str;
 	}
 
@@ -107,7 +109,7 @@ namespace software
 		
 		delete[] expected;
 
-		throw lexer_exception(result);
+		throw lexer_exception(result, *this);
 	}
 
 	void Lexer::add_progmem_link(std::string name)
@@ -116,7 +118,7 @@ namespace software
 			progmem_links.push_back(std::string(name));
 		}
 		else {
-			throw lexer_exception("Duplicated progmem link. Name: '" + name + "'.");
+			throw lexer_exception("Duplicated progmem link. Name: '" + name + "'.", *this);
 		}
 	}
 
@@ -126,16 +128,18 @@ namespace software
 			ram_links.push_back(std::string(name));
 		}
 		else {
-			throw lexer_exception("Duplicated ram link. Name: '" + name + "'.");
+			throw lexer_exception("Duplicated ram link. Name: '" + name + "'.", *this);
 		}
 	}
 
 	int Lexer::get_progmem_link(std::string name)
-	{
+	{		
 		int size = progmem_links.size();
 
 		for (int i = 0; i < size; i++)
-			if (name == progmem_links[i]) return i;
+			if (name == progmem_links[i] ) {
+				return i;
+			}
 
 		progmem_links.push_back(std::string(name));
 		return size;

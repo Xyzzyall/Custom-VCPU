@@ -3,6 +3,7 @@
 #include <deque>
 #include <exception>
 #include <unordered_map>
+#include <iostream>
 #include "Lexer.h"
 #include "CPU.h"
 
@@ -30,6 +31,10 @@ namespace software
 		void put_token(Lexer::token token);
 		void put_tokens(std::vector<Lexer::token> token);
 
+		void clear_token_buffer();
+
+		std::string get_logs();
+
 		hardware::CPU get_cpu();
 	protected:
 		//std::vector<>;
@@ -38,7 +43,13 @@ namespace software
 		hardware::CPU compiled_cpu;
 
 		void compile();
+
+		void log(std::string msg);
+
+		std::string data_to_str(std::vector<short> data);
 	private:
+		std::vector<std::string> logs;
+
 		void build_links(std::vector<short> & program);
 		std::unordered_map<int, std::vector<int>> program_links;
 		std::unordered_map<int, std::vector<int>> ram_links;

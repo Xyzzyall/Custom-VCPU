@@ -3,6 +3,7 @@
 #include <vector>
 #include <string>
 #include <exception>
+#include <iostream>
 
 namespace software
 {
@@ -94,7 +95,7 @@ namespace software
 
 		static const class lexer_exception : std::exception {
 		public:
-			lexer_exception(std::string str);
+			lexer_exception(std::string str, Lexer & lx);
 			std::string msg;
 		};
 
