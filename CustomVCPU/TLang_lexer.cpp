@@ -240,14 +240,17 @@ namespace software {
 			#pragma endregion
 
 			#pragma region copy commands
-			case TAG_COPY:
+			case TAG_COPY: 
+			{
 				check_size(5);
 				next_t = tag_stack.top();
-				if (next_t.tag_name == TAG_REG) {
+				if (next_t.tag_name == TAG_REG) 
+				{
 					tag_stack.pop();
 					next_t = tag_stack.top();
 					if (next_t.tag_name == TAG_NUMBER) { //maybe better use int buffer? :)
-						if (std::stoi(next_t.contains) == 0) {
+						int tg = std::stoi(next_t.contains);
+						if (tg == 0) {
 							tag_stack.pop();
 							if (tag_stack.top().tag_name != TAG_TO) lex_excp(tag_stack.top(), TAG_TO);
 							tag_stack.pop();
@@ -265,16 +268,17 @@ namespace software {
 							tag_stack.pop();
 							next_t = tag_stack.top();
 							if (next_t.tag_name != TAG_NUMBER) lex_excp(next_t, TAG_NUMBER);
-							push_tkn(TOKEN_COMMAND, hardware::CPU::CMD_COPY_REGX_TO_REG0 + std::stoi(next_t.contains));
+							push_tkn(TOKEN_COMMAND, hardware::CPU::CMD_COPY_REGX_TO_REG0 + tg);
 						}
 						tag_stack.pop();
-					} 
+					}
 					else lex_excp(next_t, 1, TAG_NUMBER);
 				}
 				else {
 					lex_excp(next_t, 1, TAG_REG);
 				}
-				break;
+			}
+			break;
 			#pragma endregion
 			#pragma region cmp commands
 			case TAG_COMPARE:

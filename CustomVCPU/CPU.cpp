@@ -113,7 +113,7 @@ namespace hardware
 			unsigned int buf0 = (reg_mem[1] << 16); buf0 += reg_mem[2];
 			unsigned int buf1 = (reg_mem[3] << 16); buf1 += reg_mem[4];
 			buf0 = buf0 + buf1;
-			reg_mem[1] = buf0; reg_mem[2] = buf0 >> 16;
+			reg_mem[1] = buf0 >> 16; reg_mem[2] = buf0;
 			break;
 		}
 		case CMD_WRITE:
@@ -260,6 +260,8 @@ namespace hardware
 		result += "sign = " + std::to_string(sign) + '\n';
 		result += "zero = " + std::to_string(zero) + '\n';
 		result += "steps done: " + std::to_string(current_step) + '\n';
+		result += "RAM: ";
+		result += data_to_str(ram);
 		return result;
 	}
 
@@ -267,6 +269,16 @@ namespace hardware
 	{
 		//delete[] ram;
 		//delete[] program;
+	}
+
+	std::string CPU::data_to_str(std::vector<short> data)
+	{
+		std::stringstream stream;
+		int size = data.size();
+		for (int i = 0; i < size; i++) {
+			stream << i << '\t' << std::hex << data[i] << '\n';
+		}
+		return stream.str();
 	}
 
 	void CPU::reset_regs()
@@ -315,6 +327,7 @@ namespace hardware
 	void CPU::write_ram(int ptr, short data)
 	{
 		ptr_check(ptr, prog_mem_capacity, "Writing RAM failure: bad RAM pointer.");
+		ram[ptr] = data;
 	}
 
 	void CPU::ptr_check(int ptr, int capacity, std::string commentary = "")

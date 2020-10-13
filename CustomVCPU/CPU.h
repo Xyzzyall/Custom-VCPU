@@ -56,6 +56,8 @@ namespace hardware
 
 		~CPU();
 	private:
+		std::string data_to_str(std::vector<short> data);
+
 		//debug vars
 		int current_step;
 
