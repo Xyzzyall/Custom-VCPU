@@ -13,10 +13,116 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Исходные файлы\Core">
+      <UniqueIdentifier>{0998d62b-9581-48ab-ae67-db65de1b33f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Core">
+      <UniqueIdentifier>{2ebed9ef-30e6-41a7-b7e1-a186b11dd7d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Compiler">
+      <UniqueIdentifier>{610695d7-3f76-4f0d-8a92-66c659d95e76}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Compiler">
+      <UniqueIdentifier>{ad50d0b7-9ff5-4601-8001-b58eb7fd31de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Core\Devices">
+      <UniqueIdentifier>{580d5f32-220c-43ba-baee-36a49bdbf08e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Core\Devices">
+      <UniqueIdentifier>{45e6ddc4-13ba-44b1-b82d-dd522715b284}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\TLang Compiler">
+      <UniqueIdentifier>{5294cbe4-44d0-4ddb-941f-fdda10e1b299}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\TLang Compiler">
+      <UniqueIdentifier>{73acf5de-b58d-4cc5-91c5-4d35004a597a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Console">
+      <UniqueIdentifier>{23e0c36d-d504-42fe-8e63-bc5c0e459d0f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Файлы заголовков\Console">
+      <UniqueIdentifier>{c6b16cc7-709b-4c24-8f16-8a45850ea8bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CustomVCPU.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="CPU.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>Исходные файлы\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Console.cpp">
+      <Filter>Исходные файлы\Core\Devices</Filter>
+    </ClCompile>
+    <ClCompile Include="Parser.cpp">
+      <Filter>Исходные файлы\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="Lexer.cpp">
+      <Filter>Исходные файлы\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="tag.cpp">
+      <Filter>Исходные файлы\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="syntax_tree.cpp">
+      <Filter>Исходные файлы\Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="tlang_parser.cpp">
+      <Filter>Исходные файлы\TLang Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="VCPU_Console.cpp">
+      <Filter>Исходные файлы\Console</Filter>
+    </ClCompile>
+    <ClCompile Include="Builder.cpp">
+      <Filter>Исходные файлы\TLang Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="TLang_lexer.cpp">
+      <Filter>Исходные файлы\TLang Compiler</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CPU.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>Файлы заголовков\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Console.h">
+      <Filter>Файлы заголовков\Core\Devices</Filter>
+    </ClInclude>
+    <ClInclude Include="Parser.h">
+      <Filter>Файлы заголовков\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="Lexer.h">
+      <Filter>Файлы заголовков\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="tag.h">
+      <Filter>Файлы заголовков\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="syntax_tree.h">
+      <Filter>Файлы заголовков\Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="tlang_parser.h">
+      <Filter>Файлы заголовков\TLang Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="VCPU_Console.h">
+      <Filter>Файлы заголовков\Console</Filter>
+    </ClInclude>
+    <ClInclude Include="Builder.h">
+      <Filter>Файлы заголовков\TLang Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="TLang_lexer.h">
+      <Filter>Файлы заголовков\TLang Compiler</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CustomVCPU.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
