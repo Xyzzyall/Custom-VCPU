@@ -77,6 +77,9 @@ std::string software::tag::to_string()
 
 		str_tag_case(TAG_HALT)
 
+		str_tag_case(TAG_CARRY)
+		str_tag_case(TAG_RESET)
+
 		//ram 
 		str_tag_case(TAG_RAM)
 		str_tag_case(TAG_DEC)
@@ -148,6 +151,9 @@ std::string software::tag::get_name_of_tag(int tag_name)
 		str_tag(TAG_WRITE)
 
 		str_tag(TAG_HALT)
+
+		str_tag(TAG_CARRY)
+		str_tag(TAG_RESET)
 
 		//ram 
 		str_tag(TAG_RAM)

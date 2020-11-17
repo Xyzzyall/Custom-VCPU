@@ -6,6 +6,7 @@
 #define COPY_REGX_TO_REG0(x) case CMD_COPY_REGX_TO_REG0 + x: reg_mem[0] = reg_mem[x]; break;
 #define CMD_CMP_REGX(x) case CMD_CMP_REGX + x: compare(reg_mem[0], reg_mem[x]); break;
 #define CMD_INC_REGX(x) case CMD_INC_REGX + x: reg_mem[x]++; break;
+#define CMD_RESET_REGX(x) case CMD_RESET_REGX + x: reg_mem[x] = 0; break;
 
 namespace hardware 
 {
@@ -103,12 +104,28 @@ namespace hardware
 			if (!zero)
 				prog_counter = op - 1;
 			break;
-		case CMD_MULT_REG1_REG2:
+		/*case CMD_MULT_REG1_REG2:
 			reg_mem[1] = reg_mem[1] * reg_mem[2];
 			break;
 		case CMD_SUM_REG1_REG2:
 			reg_mem[1] = reg_mem[1] + reg_mem[2];
+			break;*/
+		case CMD_SUM_REG1_REG3: {
+			sum(1, 3);
 			break;
+		}
+		case CMD_SUM_REG2_REG4: {
+			sum(2, 4);
+			break;
+		}
+		case CMD_SUMC_REG1_REG3: {
+			sum(1, 3, true);
+			break;
+		}
+		case CMD_MULT_REG2_REG3: {
+			mult(2, 3, true);
+			break;
+		}
 		case CMD_SUM_REG12_REG34: {
 			unsigned int buf0 = (reg_mem[1] << 16); buf0 += reg_mem[2];
 			unsigned int buf1 = (reg_mem[3] << 16); buf1 += reg_mem[4];
@@ -162,6 +179,16 @@ namespace hardware
 			CMD_INC_REGX(5)
 			CMD_INC_REGX(6)
 			CMD_INC_REGX(7)
+
+			//CMD_RESET_REGX
+			CMD_RESET_REGX(0)
+			CMD_RESET_REGX(1)
+			CMD_RESET_REGX(2)
+			CMD_RESET_REGX(3)
+			CMD_RESET_REGX(4)
+			CMD_RESET_REGX(5)
+			CMD_RESET_REGX(6)
+			CMD_RESET_REGX(7)
 		default:
 			throw std::exception(("Cannot decode next command. cmd = " + std::to_string(cmd)).c_str());
 			break;
@@ -259,6 +286,7 @@ namespace hardware
 		result += "halt = " + std::to_string(halt) + '\n';
 		result += "sign = " + std::to_string(sign) + '\n';
 		result += "zero = " + std::to_string(zero) + '\n';
+		result += "carry = " + std::to_string(carry) + '\n';
 		result += "steps done: " + std::to_string(current_step) + '\n';
 		result += "RAM: ";
 		result += data_to_str(ram);
@@ -295,6 +323,7 @@ namespace hardware
 		halt = false;
 		zero = false;
 		sign = false;
+		carry = false;
 	}
 
 	void CPU::compare(int x, int y)
@@ -328,6 +357,55 @@ namespace hardware
 	{
 		ptr_check(ptr, prog_mem_capacity, "Writing RAM failure: bad RAM pointer.");
 		ram[ptr] = data;
+	}
+
+	void CPU::sum(int regA, int regB, bool carry, int reg_res)
+	{
+		unsigned int a = reg_mem[regA];
+		unsigned int b = reg_mem[regB];
+		unsigned int res = a + b;
+
+		if (carry && this->carry) {
+			res += 1;
+			this->carry = false;
+		}
+
+		if (res >= USHRT_MAX) {
+			this->carry = true;
+		}
+
+		if (reg_res == -1) {
+			reg_mem[regA] = res;
+		}
+		else {
+			reg_mem[reg_res] = res;
+		}
+	}
+
+	void CPU::mult(int reg_a, int reg_b, bool pair, int reg_res)
+	{
+		unsigned int a = reg_mem[reg_a];
+		unsigned int b = reg_mem[reg_b];
+		unsigned int res = a * b;
+
+		if (pair) {
+			if (reg_res == -1) {
+				reg_mem[reg_a] = res;
+				reg_mem[reg_a - 1] = res >> 16; 
+			}
+			else {
+				reg_mem[reg_res] = res;
+				reg_mem[reg_res - 1] = res >> 16;
+			}
+		}
+		else {
+			if (reg_res == -1) {
+				reg_mem[reg_a] = res;
+			}
+			else {
+				reg_mem[reg_res] = res;
+			}
+		}
 	}
 
 	void CPU::ptr_check(int ptr, int capacity, std::string commentary = "")

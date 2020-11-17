@@ -98,11 +98,13 @@ namespace software
 		return std::string();
 	}
 
-	void Lexer::throw_expected_tag_exc(int * expected, int given, int tag_n)
+	void Lexer::throw_expected_tag_exc(int * expected, int given, int tag_n, int exp_size)
 	{
 		std::string result = "Tag: " + std::to_string(tag_n) + ". Lexer error. Expected (";
-		int size = sizeof(expected) / sizeof(*expected);
-		for (int i = 0; i < size; i++) {
+
+		if (exp_size==-1) exp_size = sizeof(expected) / sizeof(*expected);
+
+		for (int i = 0; i < exp_size; i++) {
 			result+= tag::get_name_of_tag(expected[i]) + ',';
 		}
 		result += "); given " + tag::get_name_of_tag(given) + ".";

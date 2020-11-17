@@ -64,12 +64,15 @@ namespace software
 		syntax.put_keyword("inc", TAG_INC);
 
 		syntax.put_keyword("sum", TAG_SUM);
+		syntax.put_keyword("carry", TAG_CARRY);
 		syntax.put_keyword("sum2", TAG_SUM2);
 		syntax.put_keyword("mult", TAG_MULT);
 
 		syntax.put_keyword("write", TAG_WRITE);
 
 		syntax.put_keyword("halt", TAG_HALT);
+
+		syntax.put_keyword("reset", TAG_RESET);
 
 		//ram
 		syntax.put_keyword("ram", TAG_RAM);

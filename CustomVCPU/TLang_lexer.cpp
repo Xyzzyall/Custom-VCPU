@@ -19,7 +19,7 @@ namespace software {
 			tag_stack.push(tags[i].copy());
 		}
 		int stack_start_size = tag_stack.size();
-		#define lex_excp(given_tag, exp_tags, ...) throw_expected_tag_exc(new int[exp_tags]{ __VA_ARGS__ }, given_tag.tag_name, stack_start_size - tag_stack.size())
+		#define lex_excp(given_tag, exp_tags, ...) throw_expected_tag_exc(new int[exp_tags]{ __VA_ARGS__ }, given_tag.tag_name, stack_start_size - tag_stack.size(), exp_tags)
 		#define check_size(n) if (tag_stack.size() < n) throw lexer_exception(std::string("Unexpected end of the tag stack.\n"), *this)
 
 
@@ -190,17 +190,29 @@ namespace software {
 			case TAG_SUM: {
 				check_size(4);
 				//TODO: maybe there will be sum reg2 reg3 etc
-				short target_cmd = hardware::CPU::CMD_SUM_REG1_REG2;
-				if (tag_stack.top().tag_name != TAG_REG) lex_excp(next_t, 1, TAG_REG);
+				short target_cmd = hardware::CPU::CMD_SUM_REGX_REGY;
+
+				if (tag_stack.top().tag_name == TAG_CARRY) {
+					target_cmd = hardware::CPU::CMD_SUMC_REGX_REGY;
+					tag_stack.pop();
+					check_size(4);
+				}
+
+				if (tag_stack.top().tag_name != TAG_REG) lex_excp(next_t, 2, TAG_REG, TAG_CARRY);
 				tag_stack.pop();
 				if (tag_stack.top().tag_name != TAG_NUMBER) lex_excp(tag_stack.top(), TAG_NUMBER);
-				//target_cmd += std::stoi(tag_stack.top().contains) << 4;
+				unsigned short reg_a = std::stoi(tag_stack.top().contains);
 				tag_stack.pop();
+
 				if (tag_stack.top().tag_name != TAG_REG) lex_excp(next_t, 1, TAG_REG);
 				tag_stack.pop();
+
 				if (tag_stack.top().tag_name != TAG_NUMBER) lex_excp(tag_stack.top(), TAG_NUMBER);
-				//target_cmd += std::stoi(tag_stack.top().contains);
+				unsigned short reg_b = std::stoi(tag_stack.top().contains);
+
+				target_cmd += (reg_a << 4) + reg_b;
 				push_tkn(TOKEN_COMMAND, target_cmd);
+
 				tag_stack.pop();
 				break;
 			}
@@ -222,8 +234,8 @@ namespace software {
 			}
 			case TAG_MULT: {
 				check_size(4);
-				//TODO: maybe there will be mult reg2 reg3 etc
-				short target_cmd = hardware::CPU::CMD_MULT_REG1_REG2;
+				//TODO: maybe there will be mult reg2 reg3 etc upd: lol'd.
+				short target_cmd = hardware::CPU::CMD_MULT_REG2_REG3;
 				if (tag_stack.top().tag_name != TAG_REG) lex_excp(next_t, 1, TAG_REG);
 				tag_stack.pop();
 				if (tag_stack.top().tag_name != TAG_NUMBER) lex_excp(tag_stack.top(), TAG_NUMBER);
@@ -234,6 +246,16 @@ namespace software {
 				if (tag_stack.top().tag_name != TAG_NUMBER) lex_excp(tag_stack.top(), TAG_NUMBER);
 				//target_cmd += std::stoi(tag_stack.top().contains);
 				push_tkn(TOKEN_COMMAND, target_cmd);
+				tag_stack.pop();
+				break;
+			}
+			case TAG_RESET: {
+				check_size(2);
+				if (tag_stack.top().tag_name != TAG_REG) lex_excp(next_t, 1, TAG_REG);
+				tag_stack.pop();
+				if (tag_stack.top().tag_name != TAG_NUMBER) lex_excp(next_t, 1, TAG_NUMBER);
+				unsigned short reg = std::stoi(tag_stack.top().contains);
+				push_tkn(TOKEN_COMMAND, hardware::CPU::CMD_RESET_REGX + reg);
 				tag_stack.pop();
 				break;
 			}

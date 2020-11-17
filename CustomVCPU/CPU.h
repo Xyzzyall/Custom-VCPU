@@ -46,9 +46,15 @@ namespace hardware
 			CMD_JUMP_NZERO = 0x0704, //op - prog_mem pointer, jumps to op if zero is false
 			CMD_HALT = 0xFFFF, //halt
 
-			CMD_MULT_REG1_REG2 = 0x0812, //no op, reg1 = reg1 * reg2
-			CMD_SUM_REG1_REG2 = 0x0912, //no op, reg1 = reg1 + reg2
+			CMD_MULT_REG2_REG3 = 0x0823, //no op, reg1|reg2 = reg2 * reg3
+			CMD_SUM_REGX_REGY = 0x0900, //no op, regX = regX + regY, TEMPLATE
+			CMD_SUM_REG1_REG3 = 0x0913, //no op, reg1 = reg1 + reg3
+			CMD_SUM_REG2_REG4 = 0x0924, //no op, reg2 = reg2 + reg4
+			CMD_SUMC_REGX_REGY = 0x1900, //no op, regX = regX + regY + carry, TEMPLATE
+			CMD_SUMC_REG1_REG3 = 0x1913, //no op, reg1 = reg1 + reg3 + carry
 			CMD_SUM_REG12_REG34 = 0x2913, //no op reg1|reg2 = reg1|reg2 + reg3|reg4, | means concat
+
+			CMD_RESET_REGX = 0x3000, //no op, regX = 0, X defined by low byte
 			
 			CMD_WRITE = 0x1000, //op - ram ptr, writes reg0 to RAM(ptr)
 			CMD_WRITE_INDEX = 0x1100 //op - ram ptr, writes reg0 to RAM(ptr+reg7)
@@ -75,6 +81,9 @@ namespace hardware
 		short read_ram(int ptr);
 		void write_ram(int ptr, short data);
 
+		void sum(int regA, int regB, bool carry = false, int reg_res = -1);
+		void mult(int reg_a, int reg_b, bool pair = true, int reg_res = -1);
+
 		void load_program(std::string bin_file);
 		void load_ram(std::string bin_file);
 		void erase_memory(); //fills memory with zeros	
@@ -82,7 +91,7 @@ namespace hardware
 		void ptr_check(int ptr, int capacity, std::string const commentary);
 
 		//regs vars
-		short reg_mem[CPU_REG_COUNT];
+		unsigned short reg_mem[CPU_REG_COUNT];
 		int prog_counter;
 
 		void reset_regs();
@@ -91,6 +100,7 @@ namespace hardware
 		bool halt;
 		bool zero;
 		bool sign;
+		bool carry; 
 
 		//flags operations
 		void reset_flags();

@@ -51,12 +51,15 @@ namespace software
 		TAG_INC,
 
 		TAG_SUM,
+		TAG_CARRY,
 		TAG_SUM2,
 		TAG_MULT,
 		
 		TAG_WRITE,
 
 		TAG_HALT,
+
+		TAG_RESET,
 
 		//ram 
 		TAG_RAM,

@@ -112,7 +112,7 @@ namespace software
 	protected:
 		std::vector<tag> tags;
 
-		void throw_expected_tag_exc(int * expected, int given, int tag_n);
+		void throw_expected_tag_exc(int * expected, int given, int tag_n, int exp_size = -1);
 
 		static struct link {
 			std::string name;

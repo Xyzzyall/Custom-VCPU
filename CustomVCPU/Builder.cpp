@@ -69,7 +69,7 @@ namespace software
 
 		#define IF_TKN_END if ((tokens.front().name == TOKEN_COMMON) && (tokens.front().data == CONCMD_END) ) { mode = MODE_UNKNOWN; success = true; }
 		#define IF_TKN_NAME(n) if (tokens.front().name == n)
-		#define IF_NOT_SUCCESS(details) if (!success) throw Builder::buider_exception("Bad token " + Lexer::token_to_str(tokens.front().name) + " . Details: " + std::string(details))
+		#define IF_NOT_SUCCESS(details) if (!success) throw Builder::buider_exception("Bad token " + Lexer::token_to_str(tokens.front().name) + ':' + std::to_string(tokens.front().data) + " . Details: " + std::string(details))
 
 		log("Start building. Given " + std::to_string(tokens.size()) + " tokens.");
 
@@ -135,6 +135,7 @@ namespace software
 						compiled_cpu = hardware::CPU(ram_size, program_size);
 						compiled_cpu.set_memory(program.data(), ram.data());
 						log("CPU has created. Use 'step' or 'steps *num*' to run.");
+						success = true;
 						break;
 					}
 				}
